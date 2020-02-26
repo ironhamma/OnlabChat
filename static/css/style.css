@@ -1,0 +1,131 @@
+body{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#msgContainer{
+    height: 90vh;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-end;
+    padding: .25rem;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+#msgContainer .userMsg{
+    padding: 0.5rem 1rem;
+    background-color: lime;
+    color: white;
+    border-radius: 20px;
+    width: fit-content;
+    margin-bottom: 1rem;
+}
+
+#msgContainer .otherMsg{
+    padding: 0.5rem 1rem;
+    background-color: red;
+    color: white;
+    border-radius: 20px;
+    width: fit-content;
+    align-self: flex-end;
+    margin-bottom: 1rem;
+}
+
+#sendContainer{
+    height: 10vh;
+    background-color: white;
+    border-top: 2px solid black;
+    position: relative;
+}
+
+#sendContainer input{
+    width: 80%;
+    height: calc(10vh - 1rem);
+    margin: 0.5rem;
+    box-sizing: border-box;
+}
+
+#sendContainer button{
+    background-color: lightseagreen;
+    width: 15%;
+    color: white;
+    border-radius: 5px;
+    padding: 1rem 0.5rem;
+}
+
+#loginBody{
+    width: 100%;
+    height: 100vh;
+    background-image: url(../../static/images/1521639.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    font-family: 'Comfortaa';
+}
+
+#loginInputWrapper{
+    position: absolute;
+    padding: 1rem 2rem;
+    background-color: rgba(255,255,255,0.7);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 50%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+}
+
+#loginTitle{
+    font-size: 4rem;
+    margin: 0 auto;
+    width: max-content;
+}
+
+#loginForm{
+    width: 100%;
+}
+
+#loginForm input{
+    width: 100%;
+    padding: .5rem 1rem;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 1.5rem;
+}
+
+#loginForm label{
+    font-size: 1.25rem;
+}
+
+.btn{
+    border: 1px solid black;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    padding: .5rem 1rem;
+    font-size: 1.1rem;
+    transition: .3s all;
+}
+
+.btn:hover{
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}
+
+.hidden{
+    display: none;
+}
+
+.formSelect{
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    cursor: pointer;
+}
