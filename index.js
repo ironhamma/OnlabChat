@@ -5,6 +5,7 @@ var io = require('socket.io')(http);
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var helmet = require('helmet');
+var session = require('express-session');
 
 mongoose.connect('mongodb://localhost/test');
 app.use(bodyParser.urlencoded());
@@ -12,24 +13,30 @@ app.use(bodyParser.json());
 app.use(helmet());
 app.set('view engine', 'ejs'); 
 
-
-var User = mongoose.model('User', {name: String, pw: String});
 /*var sanyi = new User({ name: 'Sanyi', pw: 'asd1234'});
 sanyi.save(function(err){
   console.log("rawr");
 });*/
 
+app.use(session({
+  secret: 'desktop monkey',
+  cookie: {
+    maxAge: 60000
+  },
+  resave: true,
+  saveUninitialized: false
+}));
 app.use('/static', express.static('static'));
-require('./routes/general_route')(app);
-/*
-app.get('/', function(req, res){
-    res.sendFile(__dirname + '/static/html/index.html');
-  });
 
-app.get('/login',function(req, res){
-  res.sendFile(__dirname + '/static/html/login.html');
+app.use(function (req, res, next){
+  res.tpl = {};
+  res.tpl.error = [];
+  next();
 });
-*/
+
+require('./routes/general_route')(app);
+
+
 io.on('connection', function(socket){
     console.log('a user connected');
     socket.on('disconnect', function(){

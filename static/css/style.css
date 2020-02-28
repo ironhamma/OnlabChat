@@ -103,6 +103,10 @@ body{
     font-size: 1.25rem;
 }
 
+#loginForm a{
+    color: black;
+}
+
 .btn{
     border: 1px solid black;
     background-color: white;

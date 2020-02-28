@@ -12,36 +12,16 @@
     <div id="loginBody">
         <div id="loginInputWrapper">
             <div id="loginTitle">Chammt</div>
-            <form action="post" id="loginForm">
+            <form method="post" id="loginForm">
                 <label for="loginUser">Username</label>
                 <input type="text" name="username" id="loginUser">
-                <label for="registerEmail" class="register hidden">Email</label>
-                <input type="text" name="email" id="registerEmail" class="register hidden">
                 <label for="loginPass">Password</label>
                 <input type="password" name="password" id="loginPass">
-                <label for="registerRePass" class="register hidden">Re-password</label>
-                <input type="text" name="re-password" id="registerRePass" class="register hidden">
                 <button type="submit" class="btn" id="loginBtn">Login</button>
-                <div class="register formSelect">I want to register ></div>
-                <div class="login hidden formSelect">I want to log in ></div>
+                <a href="/register"><div class="register formSelect">I want to register ></div></a>
             </form>
         </div>
 
     </div>
-
-    <script>
-        $(document).ready(function(){
-            $('.register').click(function(){
-                $('.register').toggleClass('hidden');
-                $('.login').toggleClass('hidden');
-                $('#loginBtn').html("Register");
-            });
-            $('.login').click(function(){
-                $('.register').toggleClass('hidden');
-                $('.login').toggleClass('hidden');
-                $('#loginBtn').html("Login");
-            });
-        });
-    </script>
 </body>
 </html>

@@ -1,7 +1,31 @@
-module.exports = function (target) {
+var requireOption = require('../common').requireOption;
 
-    return function (req, res, next) {
-      res.redirect('/static/html/login.html');
-      next();
-    };
+
+module.exports = function (objRepo) {
+
+  var userModel = requireOption(objRepo, 'userModel');
+
+  return function (req, res, next) {
+
+    userModel.findOne({
+      username: req.body.username
+    }, function (err, result) {
+      if ((err) || !result) {
+        res.status(403).send('/login');
+        next();
+      }
+      else {
+        if (result.password !== req.body.password) {
+          res.status(403).send('/login');
+          next();
+        }
+        else {
+          req.session.userId = result._id;
+          res.redirect('/messenger');
+          next();
+        }
+      }
+    })
+
   };
+};
