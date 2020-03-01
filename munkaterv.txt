@@ -1,0 +1,23 @@
+=================================================================================
+      Hallgató neve: Szabó Benedek Zoltán
+       Neptun kódja: AG11M9
+         Szakiránya: BME VIK BSC Infokommunikáció
+         Email címe: benedek.szabo4@gmail.com
+ Konzulens(ek) neve: Paróczi Zsombor
+        Tanév/félév: 2019/2020/2 - 6. félév
+  Feladat/téma címe: Websocket alapú rendszer tervezése és megvalósítása Node.js segítségével
+=================================================================================
+Tervezett munkafázisok a félév során:
+=================================================================================
+  1-2. oktatási hét: Téma és konzulens kiválasztása
+  3-4. oktatási hét: Socket.io felhasználási területeinek vizsgálata, feladat meghatározása.
+  5-7. oktatási hét: A feladatbeli alkalmazás kinézetéhez mockupok tervezése,
+	 	     implementáció elkezdése.
+ 8-11. oktatási hét: Végleges implementálás és az elkészített feladat vizsgálata,
+	 	     tesztelése és a tapasztalatok dokumentálása
+12-13. oktatási hét: Írásbeli beadandó és prezentáció elkészítése, konzulensnek
+                     bemutatás és írásbeli jóváhagyása
+   14. oktatási hét: Írásbeli leadása, szóbeli elõadás megtartása, félév munkája
+                     során keletkezett tapasztalatok összegyûjtése, értékelése
+                     és dokumentálása
+=================================================================================
