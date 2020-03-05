@@ -4,73 +4,10 @@ body{
     overflow: hidden;
 }
 
-#msgContainer{
-    height: 90vh;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-content: flex-end;
-    padding: .25rem;
-    box-sizing: border-box;
-    overflow: auto;
-    background-image: url(../../static/images/1521639.jpg);
-}
-
-#msgContainer .userMsg > .msgBody{
-    padding: 0.5rem 1rem;
-    background-color: rgb(26, 26, 26);
-    color: white;
-    border-radius: 20px;
-    width: fit-content;
-    margin-bottom: 1rem;
-}
-
-#msgContainer .userMsg{
-    align-self: flex-end;
-    text-align: right;
-}
-
-#msgContainer .userMsg, #msgContainer .otherMsg{
-    font-size: .8rem;
-    color: white;
-}
-
-#msgContainer .otherMsg > .msgBody{
-    padding: 0.5rem 1rem;
-    background-color: rgb(0, 22, 95);
-    color: white;
-    border-radius: 20px;
-    width: fit-content;
-    margin-bottom: 1rem;
-}
-
-#sendContainer{
-    height: 10vh;
-    background-color: white;
-    border-top: 2px solid black;
-    position: relative;
-}
-
-#sendContainer input{
-    width: 80%;
-    height: calc(10vh - 1rem);
-    margin: 0.5rem;
-    box-sizing: border-box;
-}
-
-#sendContainer button{
-    background-color: lightseagreen;
-    width: 15%;
-    color: white;
-    border-radius: 5px;
-    padding: 1rem 0.5rem;
-}
-
 #loginBody{
     width: 100%;
     height: 100vh;
-    background-image: url(../../static/images/1521639.jpg);
+    background-image: url(../images/1521639.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -142,4 +79,173 @@ body{
     bottom: 2rem;
     right: 2rem;
     cursor: pointer;
+}
+
+/*Idáig login*/
+/****************************/
+/****************************/
+/****************************/
+/****************************/
+/****************************/
+
+
+#leftSidebar{
+    width: 22%;
+    min-width: 17rem;
+    border-right: 2px solid black;
+    height: 100vh;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background-color: rgba(0,0,0,0.4);
+}
+
+#mainPanel{
+    width: 78%;
+    min-width: 50rem;
+    height: 100vh;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#background{
+    background-image: url(../images/1521639.jpg);
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+}
+
+#panelHead{
+    width: 100%;
+    height: calc(3rem - 8px);
+    border-bottom: 8px solid black;
+    position: relative;
+    background-color: rgba(0,0,0,0.65);
+    color: white;
+}
+
+#msgMain{
+    width: 100%;
+    height: calc(100% - 3rem - 4rem);
+    background-color: rgba(0,0,0,0.3);
+    box-sizing: border-box;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    align-content: flex-end;
+}
+
+#msgForm{
+    width: 100%;
+    min-height: 4rem;
+    border-top: 2px solid black;
+    padding: .5rem;
+    box-sizing: border-box;
+    position: relative;
+    background-color: rgba(0,0,0,0.4);
+}
+
+#msgInput{
+    height: 2.5rem;
+    width: 85%;
+    background-color: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 5px;
+    transition: .3s all;
+    box-sizing: border-box;
+    padding: .5rem;
+    color: white;
+}
+
+#msgInput:hover, #msgInput:focus{
+    background-color: rgba(255,255,255,0.2);
+    outline: none;
+}
+
+#msgSend{
+    height: 2.5rem;
+    width: 10%;
+    margin-left: 1rem;
+    border: none;
+    color: black;
+    cursor: pointer;
+    background-color: rgba(255,255,255,0.1);
+    transition: .3s all;
+    border-radius: 5px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#msgSend:hover, #msgSend:focus{
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+}
+
+#panelUsername{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 1.5rem;
+}
+
+#sidebarTitle{
+    height: calc(3rem);
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    text-align: center;
+    padding-top: .75rem;
+    box-sizing: border-box;
+    border-bottom: 8px solid black;
+}
+
+.sbUser{
+    width: 100%;
+    height: 4rem;
+    background-color: rgba(0,0,0,0.3);
+    transition: .3s all;
+    color: white;
+    box-sizing: border-box;
+    padding: .5rem 1rem;
+}
+
+.sbUser:nth-child(even){
+    background-color: rgba(0,0,0,0.4);
+}
+
+.sbUser:hover{
+    background-color: rgba(0,0,0,0.5);
+}
+
+#sbUserWrapper{
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 3rem;
+    box-sizing: border-box;
+}
+
+.messageText{
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    box-sizing: border-box;
+    padding: .5rem;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.messageSender{
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.foreign{
+    align-self: flex-end;
 }

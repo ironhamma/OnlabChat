@@ -8,13 +8,27 @@
     <link rel="stylesheet" href="../../static/css/style.css">
 </head>
 <body>
-    <div id="msgContainer">
-    <%= console.log(userObj.username) %>
+    <div id="background"></div>
+    <div id="leftSidebar">
+        <div id="sidebarTitle">Available</div>
+        <div id="sbUserWrapper">
+            <% var i = 0; for(i=0;i<users.length;++i){ %>
+             <div class="sbUser"><%= users[i]['username'] %></div>
+             <% } %>
+        </div>
     </div>
-    <div id="sendContainer">
-        <form action="">
-            <input id="message" autocomplete="off" /><button>Send</button>
-          </form>
+    <div id="mainPanel">
+        <div id="panelHead">
+            <div id="panelUsername">Username</div>
+        </div>
+        <div id="msgMain">
+        </div>
+        <div id="msgForm">
+            <form method="post">
+                <input type="text" name="msgInput" id="msgInput" autocomplete="off">
+                <button type="submit" id="msgSend">Küldés</button>
+            </form>
+        </div>
     </div>
     
     
@@ -35,22 +49,22 @@
         e.preventDefault(); // prevents page reloading
         var messageJSON = {
           sessID: '<%=sessID%>',
-          text: $('#message').val()
+          text: $('#msgInput').val()
         };
         messageJSON = JSON.stringify(messageJSON);
         socket.emit('chat message', messageJSON);
-        $('#message').val('');
+        $('#msgInput').val('');
         return false;
       });
       var type = "user";
       socket.on('chat message', function(msg){
         var resp = JSON.parse(msg);
         console.log(resp);
-        '<%=userObj.username%>' == resp.sender ? type = 'user' : type = 'other';
-        $('#msgContainer').append(
-          '<div class="'+type+'Msg">'+
-          '<div class="sender">' + resp.sender + '</div>' +
-          '<div class="msgBody">' +
+        '<%=userObj.username%>' == resp.sender ? type = 'user' : type = 'foreign';
+        $('#msgMain').append(
+          '<div class="'+type+' message">'+
+          '<div class="messageSender">' + resp.sender + '</div>' +
+          '<div class="messageText">' +
           escapeHtml(resp.text) +
           '</div>');
       });
