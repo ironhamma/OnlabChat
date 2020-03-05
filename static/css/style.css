@@ -14,24 +14,34 @@ body{
     padding: .25rem;
     box-sizing: border-box;
     overflow: auto;
+    background-image: url(../../static/images/1521639.jpg);
 }
 
-#msgContainer .userMsg{
+#msgContainer .userMsg > .msgBody{
     padding: 0.5rem 1rem;
-    background-color: lime;
+    background-color: rgb(26, 26, 26);
     color: white;
     border-radius: 20px;
     width: fit-content;
     margin-bottom: 1rem;
 }
 
-#msgContainer .otherMsg{
+#msgContainer .userMsg{
+    align-self: flex-end;
+    text-align: right;
+}
+
+#msgContainer .userMsg, #msgContainer .otherMsg{
+    font-size: .8rem;
+    color: white;
+}
+
+#msgContainer .otherMsg > .msgBody{
     padding: 0.5rem 1rem;
-    background-color: red;
+    background-color: rgb(0, 22, 95);
     color: white;
     border-radius: 20px;
     width: fit-content;
-    align-self: flex-end;
     margin-bottom: 1rem;
 }
 

@@ -6,6 +6,7 @@ module.exports = function (objRepo) {
       return function (req, res, next) {
         userModel.findOne({_id: req.session.userId}, function(err, obj){
           res.tpl.userObj = obj;
+          res.tpl.sessID = req.session.userId;
           next();
         });
     };  

@@ -18,6 +18,15 @@ sanyi.save(function(err){
   console.log("rawr");
 });*/
 
+function escapeHtml(unsafe) {
+  return unsafe
+       .replace(/&/g, "&amp;")
+       .replace(/</g, "&lt;")
+       .replace(/>/g, "&gt;")
+       .replace(/"/g, "&quot;")
+       .replace(/'/g, "&#039;");
+}
+
 app.use(session({
   secret: 'desktop monkey',
   cookie: {
@@ -27,6 +36,8 @@ app.use(session({
   saveUninitialized: false
 }));
 app.use('/static', express.static('static'));
+
+global.logedInUsers = new Array();
 
 app.use(function (req, res, next){
   res.tpl = {};
@@ -44,11 +55,19 @@ io.on('connection', function(socket){
       });
 io.on('connection', function(socket){
         socket.on('chat message', function(msg){
-          console.log('message: ' + msg);
         });
       });
 socket.on('chat message', function(msg){
-        io.emit('chat message', msg);
+  var decoded = JSON.parse(msg);
+  var sess = logedInUsers.find(o => o.userId == decoded.sessID);
+  console.log(sess);
+  console.log(decoded.sessID);
+  var messageInfo = {
+          sender : sess.username,
+          text : escapeHtml(decoded.text)
+        };
+        messageInfo = JSON.stringify(messageInfo);
+        io.emit('chat message', messageInfo);//server pakolja rá a dolgokat a kliensnek az üzire
       });
 });
 

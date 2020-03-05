@@ -9,9 +9,7 @@
 </head>
 <body>
     <div id="msgContainer">
-    <%= "Hello" %>
-        <!--div class="userMsg">Hello world!</div>
-        <div class="otherMsg">Hello otherworld!</div-->
+    <%= console.log(userObj.username) %>
     </div>
     <div id="sendContainer">
         <form action="">
@@ -35,14 +33,26 @@
       var socket = io();
       $('form').submit(function(e){
         e.preventDefault(); // prevents page reloading
-        socket.emit('chat message', $('#message').val());
+        var messageJSON = {
+          sessID: '<%=sessID%>',
+          text: $('#message').val()
+        };
+        messageJSON = JSON.stringify(messageJSON);
+        socket.emit('chat message', messageJSON);
         $('#message').val('');
         return false;
       });
       var type = "user";
       socket.on('chat message', function(msg){
-        type != 'user' ? type = 'user' : type = 'other';
-        $('#msgContainer').append('<div class="'+type+'Msg">'+escapeHtml(msg)+'</div>');
+        var resp = JSON.parse(msg);
+        console.log(resp);
+        '<%=userObj.username%>' == resp.sender ? type = 'user' : type = 'other';
+        $('#msgContainer').append(
+          '<div class="'+type+'Msg">'+
+          '<div class="sender">' + resp.sender + '</div>' +
+          '<div class="msgBody">' +
+          escapeHtml(resp.text) +
+          '</div>');
       });
     });
   </script>
