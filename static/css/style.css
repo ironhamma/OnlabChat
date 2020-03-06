@@ -143,7 +143,8 @@ body{
     flex-wrap: nowrap;
     align-items: flex-start;
     align-content: flex-end;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #msgForm{
@@ -252,8 +253,14 @@ body{
 
 .foreign{
     align-self: flex-end;
+    margin-right: -20rem;
+}
+
+.user{
+    margin-left: -20rem;
 }
 
 .message{
     margin-bottom: 1rem;
+    transition: .3s all;
 }

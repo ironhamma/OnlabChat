@@ -6,7 +6,6 @@ module.exports = function (objRepo) {
   
     return function(req, res, next){
 
-        console.log('hello');
 
         userModel.findOne({ email: req.body.registerEmail }, function(err, result){
           if((err) || (result !== null)){

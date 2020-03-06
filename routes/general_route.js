@@ -3,6 +3,7 @@ var loginMW = require('../middleware/general/loginMW');
 var renderMW = require('../middleware/general/render')
 var registerMW = require('../middleware/general/registerMW');
 var getUserDataMW = require('../middleware/general/getUserDataMW');
+var authMW = require('../middleware/general/auth');
 
 var userModel = require('../models/user');
 
@@ -30,6 +31,7 @@ module.exports = function (app) {
     renderMW('login'));
 
     app.get('/messenger',
+    authMW(),
     getUserDataMW(objRepository),
     renderMW('index'));
 

@@ -13,11 +13,6 @@ app.use(bodyParser.json());
 app.use(helmet());
 app.set('view engine', 'ejs'); 
 
-/*var sanyi = new User({ name: 'Sanyi', pw: 'asd1234'});
-sanyi.save(function(err){
-  console.log("rawr");
-});*/
-
 function escapeHtml(unsafe) {
   return unsafe
        .replace(/&/g, "&amp;")
@@ -64,8 +59,6 @@ io.on('connection', function(socket){
 socket.on('chat message', function(msg){
   var decoded = JSON.parse(msg);
   var sess = logedInUsers.find(o => o.userId == decoded.sessID);
-  console.log(sess);
-  console.log(decoded.sessID);
   if(decoded.text != "")
     {
     var messageInfo = {

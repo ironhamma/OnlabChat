@@ -67,7 +67,6 @@ $('#panelUsername').html('Loged in as: ' + '<%=userObj.username%>');
       var type = "user";
       socket.on('chat message', function(msg){
         var resp = JSON.parse(msg);
-        console.log(resp);
         '<%=userObj.username%>' == resp.sender ? type = 'foreign' : type = 'user';
         $('#msgMain').append(
           '<div class="'+type+' message">'+
@@ -75,16 +74,39 @@ $('#panelUsername').html('Loged in as: ' + '<%=userObj.username%>');
           '<div class="messageText">' +
           escapeHtml(resp.text) +
           '</div>');
+          $('#msgMain').children('.message').last().animate({marginLeft: 0, marginRight: 0},300,"swing", function(){});
       });
       socket.on('user connected', function(res){
       var logedInUsersText = "";
           var i = 0;
           for(i = 0; i < res.length; ++i){
             logedInUsersText += '<div class="sbUser">' + res[i] + '</div>';
-            console.log(res[i]);
           }
         $('#sbUserWrapper').html(logedInUsersText);
       });
+
+    /* Random háttér flickr-ről */
+    /*****************************************************************************/
+   /*  $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
+        {
+            tags: 'cute dog',
+            tagmode: "any",
+            format: "json"
+        },
+        function(data) {
+            var rnd = Math.floor(Math.random() * data.items.length);
+
+            var image_src = data.items[rnd]['media']['m'].replace("_m", "_b");
+
+            $('#background').css('background-image', "url('" + image_src + "')");
+
+        }); */
+
+
+
+
+
+
     });
 </script>
 </body>
