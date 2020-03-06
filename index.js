@@ -47,28 +47,35 @@ app.use(function (req, res, next){
 
 require('./routes/general_route')(app);
 
+io.on('connection', function(socket){
+  users = [];
+  for (let i = 0; i < logedInUsers.length; i++) {
+    users.push(logedInUsers[i]['username']);          
+  }
+  io.emit('user connected',users);
+});
 
 io.on('connection', function(socket){
     console.log('a user connected');
     socket.on('disconnect', function(){
         console.log('user disconnected');
       });
-io.on('connection', function(socket){
-        socket.on('chat message', function(msg){
-        });
-      });
+
 socket.on('chat message', function(msg){
   var decoded = JSON.parse(msg);
   var sess = logedInUsers.find(o => o.userId == decoded.sessID);
   console.log(sess);
   console.log(decoded.sessID);
-  var messageInfo = {
-          sender : sess.username,
-          text : escapeHtml(decoded.text)
-        };
-        messageInfo = JSON.stringify(messageInfo);
-        io.emit('chat message', messageInfo);//server pakolja rá a dolgokat a kliensnek az üzire
-      });
+  if(decoded.text != "")
+    {
+    var messageInfo = {
+            sender : sess.username,
+            text : escapeHtml(decoded.text)
+          };
+          messageInfo = JSON.stringify(messageInfo);
+          io.emit('chat message', messageInfo);//server pakolja rá a dolgokat a kliensnek az üzire
+    }
+  });
 });
 
 http.listen(3000, function(){
