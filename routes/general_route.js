@@ -4,6 +4,8 @@ var renderMW = require('../middleware/general/render')
 var registerMW = require('../middleware/general/registerMW');
 var getUserDataMW = require('../middleware/general/getUserDataMW');
 var authMW = require('../middleware/general/auth');
+var spotifyLoginMW = require('../middleware/general/spotifyLogin');
+
 
 var userModel = require('../models/user');
 
@@ -21,7 +23,9 @@ module.exports = function (app) {
         renderMW('login'));
 
     app.post('/login',
-        loginMW(objRepository));
+        spotifyLoginMW(),
+        loginMW(objRepository),
+        );
 
     app.get('/register',
         renderMW('register'));
@@ -34,5 +38,9 @@ module.exports = function (app) {
     authMW(),
     getUserDataMW(objRepository),
     renderMW('index'));
+
+    app.get('/spotifyLogin',
+    renderMW('index')
+    );
 
 }

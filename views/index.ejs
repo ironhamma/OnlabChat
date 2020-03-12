@@ -7,7 +7,7 @@
     <title>Benő chat</title>
     <link rel="stylesheet" href="../../static/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet">
-    <link href="\node_modules\perfect-scrollbar\css\perfect-scrollbar.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
 </head>
 <body>
     <div id="background"></div>
@@ -24,18 +24,25 @@
             <div id="panelUsername">Username</div>
         </div>
         <div id="msgMain">
+        <a id="spotifyLogin" href="#">Login</a>
+        <div id="emojiContainer">
+        </div>
         </div>
         <div id="msgForm">
             <form method="post">
                 <input type="text" name="msgInput" id="msgInput" autocomplete="off">
-                <button type="submit" id="msgSend">Küldés</button>
+                <i class="far fa-smile" id="emojiBtn"></i>
+                <button type="submit" id="msgSend" >Küldés</button>
             </form>
         </div>
     </div>
     
     
-<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<script src ="../static/js/spotify.js"></script>
+<script type="text/javascript" src="../static/js/emojis.js"></script>
 <script>
 $('#panelUsername').html('Loged in as: ' + '<%=userObj.username%>');
     //const ps = new PerfectScrollbar('#sbUserWrapper');
@@ -49,6 +56,14 @@ $('#panelUsername').html('Loged in as: ' + '<%=userObj.username%>');
          .replace(/"/g, "&quot;")
          .replace(/'/g, "&#039;");
  }
+
+ function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
     $(function () {
       var socket = io();
       $('form').submit(function(e){
@@ -72,7 +87,7 @@ $('#panelUsername').html('Loged in as: ' + '<%=userObj.username%>');
           '<div class="'+type+' message">'+
           '<div class="messageSender">' + resp.sender + '</div>' +
           '<div class="messageText">' +
-          escapeHtml(resp.text) +
+          resp.text +
           '</div>');
           $('#msgMain').children('.message').last().animate({marginLeft: 0, marginRight: 0},300,"swing", function(){});
       });
@@ -84,6 +99,38 @@ $('#panelUsername').html('Loged in as: ' + '<%=userObj.username%>');
           }
         $('#sbUserWrapper').html(logedInUsersText);
       });
+
+/* Spotify integration */
+/****************************************************************/
+/****************************************************************/
+  $.each(emojidata, function(){
+      var emojiHtml = "<div class='emojiItem' data-emojistring='" + this + "'>" + this + "</div>";
+      $("#emojiContainer").append(emojiHtml);
+  });
+
+  $("#emojiBtn").click(function(){
+    $("#emojiContainer").toggleClass("emojiHeight");
+  });
+
+  $('#emojiContainer').click(function(event){
+    event.stopPropagation();
+  });
+
+  $("#msgMain").click(function(){
+    if($("#emojiContainer").hasClass("emojiHeight")){
+      $("#emojiContainer").toggleClass("emojiHeight");
+    }
+  });
+
+  $(".emojiItem").click(function(){
+    $('#msgInput').val($('#msgInput').val() + $(this).attr("data-emojistring"));
+  });
+
+    socket.on('spotifyUrl', function(data) {
+      $("#spotifyLogin").attr("href",data);
+      var code = getParameterByName('code');
+      socket.emit('spotifyCode', { x: code});
+    });
 
     /* Random háttér flickr-ről */
     /*****************************************************************************/

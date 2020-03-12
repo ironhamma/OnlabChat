@@ -21,6 +21,7 @@ module.exports = function (objRepo) {
         }
         else {
           req.session.userId = result._id;
+          req.session.access_token = "";
           req.session.username = result.username;
           global.logedInUsers.push({userId: req.session.userId, username: req.session.username});
           res.redirect('/messenger');

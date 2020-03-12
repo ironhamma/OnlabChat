@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var helmet = require('helmet');
 var session = require('express-session');
+var emoji = require('node-emoji');
 
 mongoose.connect('mongodb://localhost/test');
 app.use(bodyParser.urlencoded());
@@ -61,9 +62,10 @@ socket.on('chat message', function(msg){
   var sess = logedInUsers.find(o => o.userId == decoded.sessID);
   if(decoded.text != "")
     {
+    var txt = emoji.emojify(escapeHtml(decoded.text));
     var messageInfo = {
             sender : sess.username,
-            text : escapeHtml(decoded.text)
+            text : txt
           };
           messageInfo = JSON.stringify(messageInfo);
           io.emit('chat message', messageInfo);//server pakolja rá a dolgokat a kliensnek az üzire
@@ -73,4 +75,51 @@ socket.on('chat message', function(msg){
 
 http.listen(3000, function(){
   console.log('listening on *:3000');
+});
+
+/* Spotify Integration */
+/****************************************************************/
+/****************************************************************/
+/****************************************************************/
+/****************************************************************/
+/****************************************************************/
+
+var SpotifyWebApi = require('spotify-web-api-node');
+
+var spotifyApi = new SpotifyWebApi({
+  clientId: '413f02f1efce4fccaccd0d29b6c85555',
+  clientSecret: '6cba98454fde429e8747159316c9200d',
+  redirectUri: 'http://bencica.sch.bme.hu:3000/messenger'
+});
+
+var scopes = ['playlist-modify-public', 'playlist-modify-private', 'ugc-image-upload', 'user-modify-playback-state', 'user-read-playback-state', 'user-read-currently-playing', 'user-top-read', 'user-read-recently-played'];
+          var state = '2';
+          
+
+
+io.on('connection', function(socket){
+var authorizeURL = global.authLink;
+io.emit('spotifyUrl', authorizeURL);
+  
+  socket.on('spotifyCode', function(data){
+    var code = data.x;
+    
+    spotifyApi.authorizationCodeGrant(code).then(
+      function(data) {
+        console.log('The token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+        console.log('The refresh token is ' + data.body['refresh_token']);
+    
+        // Set the access token on the API object to use it in later calls
+        spotifyApi.setAccessToken(data.body['access_token']);
+        spotifyApi.setRefreshToken(data.body['refresh_token']);
+      },
+      function(err) {
+        console.log('Something went wrong!', err);
+      }
+    );
+
+
+     });
+  
 });
