@@ -7,47 +7,65 @@
     <title>Benő chat</title>
     <link rel="stylesheet" href="../../static/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static\js\perfect-scrollbar-1.4.0\css\perfect-scrollbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
 </head>
 <body>
     <div id="background"></div>
     <div id="leftSidebar">
         <div id="sidebarTitle">Available</div>
-        <div id="sbUserWrapper">
-            <% var i = 0; for(i=0;i<users.length;++i){ %>
-             <div class="sbUser"><%= users[i]['username'] %></div>
-             <% } %>
-        </div>
+        <div id="sbUserWrapper"></div>
     </div>
     <div id="mainPanel">
         <div id="panelHead">
             <div id="panelUsername">Username</div>
         </div>
-        <div id="msgMain">
-        <a id="spotifyLogin" href="#">Login</a>
-        <div id="emojiContainer">
+        <div id=msgWrap>
+        <div id="msgMain"></div>
+        <div id="msgMainOverlay">
+        <div id="ytContainer">
+          <div id="ytInner">
+            <input type="text" name="ytSearch" id="ytSearch">
+            <div id="ytsBtn" onclick="keyWordsearch()">Search</div>
+            <div id="ytResultCont">
+            </div>
+            <div id="ytVideo">
+            <iframe id="existing-iframe-example"
+                    width="640" height="360"
+                    src="https://www.youtube.com/embed/FM2IK8tFuWk?enablejsapi=1"
+                    frameborder="0"
+                    style="border: solid 4px #37474F"
+            ></iframe>
+              <!--iframe width="600" height="345"
+              src="https://www.youtube.com/embed/VEjY9ZQhCHg">
+              </iframe-->
+            </div>
+          </div>
         </div>
-        </div>
+        <!--img src="" alt="" id="streamedImage"-->
+        <div id="emojiContainer"></div>
+    </div>
+    </div>
         <div id="msgForm">
             <form method="post">
                 <input type="text" name="msgInput" id="msgInput" autocomplete="off">
-                <i class="far fa-smile" id="emojiBtn"></i>
+                <i class="far fa-images iconBtn" id="imgUploadBtn"></i>
+                <i class="fab fa-youtube iconBtn" id="ytTrigger"></i>
+                <i class="far fa-smile iconBtn" id="emojiBtn"></i>
                 <button type="submit" id="msgSend" >Küldés</button>
             </form>
         </div>
     </div>
     
-    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady">   </script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="https://sdk.scdn.co/spotify-player.js"></script>
-<script src ="../static/js/spotify.js"></script>
+<script src="static\js\perfect-scrollbar-1.4.0\dist\perfect-scrollbar.js"></script>
+<!--script type="text/javascript" src="../static/js/webcam.js"></script-->
 <script type="text/javascript" src="../static/js/emojis.js"></script>
+<script type="text/javascript" src="../static/js/functions.js"></script>
 <script>
-$('#panelUsername').html('Loged in as: ' + '<%=userObj.username%>');
-    //const ps = new PerfectScrollbar('#sbUserWrapper');
-   // const container = document.querySelector('#msgMain');
-    //const ps = new PerfectScrollbar(container);
+$('#panelUsername').html('Logged in as: ' + '<%=userObj.username%>');
     function escapeHtml(unsafe) {
     return unsafe
          .replace(/&/g, "&amp;")
@@ -64,7 +82,97 @@ $('#panelUsername').html('Loged in as: ' + '<%=userObj.username%>');
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
+
+
+
+  var tag = document.createElement('script');
+  tag.id = 'iframe-demo';
+  tag.src = 'https://www.youtube.com/iframe_api';
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('existing-iframe-example', {
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+    });
+  };
+  function onPlayerReady(event) {
+    document.getElementById('existing-iframe-example').style.borderColor = '#FF6D00';
+  }
+  function changeBorderColor(playerStatus) {
+    var color;
+    if (playerStatus == -1) {
+      color = "#37474F"; // unstarted = gray
+    } else if (playerStatus == 0) {
+      color = "#FFFF00"; // ended = yellow
+    } else if (playerStatus == 1) {
+      socket.emit('ytPlay',"PLAYING");
+      console.log("PLAY");
+      color = "#33691E"; // playing = green
+    } else if (playerStatus == 2) {
+      socket.emit("ytStop","STOPPED");
+      console.log("PAUSED");
+      color = "#DD2C00"; // paused = red
+    } else if (playerStatus == 3) {
+      color = "#AA00FF"; // buffering = purple
+    } else if (playerStatus == 5) {
+      color = "#FF6DOO"; // video cued = orange
+    }
+    if (color) {
+      document.getElementById('existing-iframe-example').style.borderColor = color;
+    }
+  }
+  function onPlayerStateChange(event) {
+    changeBorderColor(event.data);
+  }
+
+function keyWordsearch(){
+    gapi.client.setApiKey('AIzaSyDpocr9UjSiT9aspppH2FVGF_M6VCgDUbg');
+    gapi.client.load('youtube', 'v3', function(){
+            makeRequest();
+    });
+};    
+function initBtns(){
+        $(".ytItem").click(function(e){
+          var vidId = $(this).attr("data-videoId");
+          socket.emit('videoId', vidId);
+        });
+      };
+function makeRequest(){
+    var q = $('#ytSearch').val();
+    var request = gapi.client.youtube.search.list({
+            q: q,
+            part: 'snippet', 
+            maxResults: 25
+    });
+    request.execute(function(response)  {                                                                                    
+            $('#ytResultCont').empty()
+            var srchItems = response.result.items;                      
+            $.each(srchItems, function(index, item){
+            
+            var newItem = '<div class="ytItem" data-videoId="'+ item.id.videoId + '">' +
+            '<div class="ytItemThumb" style="background-image: url('+item.snippet.thumbnails.default.url +')"></div>' +
+            '<div class="ytItemTitle">' + item.snippet.title + '</div></div>';
+
+            $('#ytResultCont').append(newItem);                      
+    })  
+    initBtns();
+  })  
+}
     $(function () {
+
+      //YOUTUBE------------------------------------------------------
+ //.............................................................
+ 
+
+
+ //YOUTUBE------------------------------------------------------
+ //.............................................................
+
       var socket = io();
       $('form').submit(function(e){
         e.preventDefault(); // prevents page reloading
@@ -95,67 +203,32 @@ $('#panelUsername').html('Loged in as: ' + '<%=userObj.username%>');
       var logedInUsersText = "";
           var i = 0;
           for(i = 0; i < res.length; ++i){
-            logedInUsersText += '<div class="sbUser">' + res[i] + '</div>';
+            logedInUsersText += '<div class="sbUser"><div class="sbUserName">' + res[i] + '</div><a href="/camCall"><i class=" userCall fas fa-phone"></i></a></div>';
           }
         $('#sbUserWrapper').html(logedInUsersText);
       });
 
-/* Spotify integration */
-/****************************************************************/
-/****************************************************************/
-  $.each(emojidata, function(){
-      var emojiHtml = "<div class='emojiItem' data-emojistring='" + this + "'>" + this + "</div>";
-      $("#emojiContainer").append(emojiHtml);
-  });
+      socket.on("videoId", function(data){
+        player.loadVideoById(data);
+        console.log(data);
+      });
 
-  $("#emojiBtn").click(function(){
-    $("#emojiContainer").toggleClass("emojiHeight");
-  });
-
-  $('#emojiContainer').click(function(event){
-    event.stopPropagation();
-  });
-
-  $("#msgMain").click(function(){
-    if($("#emojiContainer").hasClass("emojiHeight")){
-      $("#emojiContainer").toggleClass("emojiHeight");
-    }
-  });
-
-  $(".emojiItem").click(function(){
-    $('#msgInput').val($('#msgInput').val() + $(this).attr("data-emojistring"));
-  });
-
-    socket.on('spotifyUrl', function(data) {
-      $("#spotifyLogin").attr("href",data);
-      var code = getParameterByName('code');
-      socket.emit('spotifyCode', { x: code});
-    });
-
-    /* Random háttér flickr-ről */
-    /*****************************************************************************/
-   /*  $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
-        {
-            tags: 'cute dog',
-            tagmode: "any",
-            format: "json"
-        },
-        function(data) {
-            var rnd = Math.floor(Math.random() * data.items.length);
-
-            var image_src = data.items[rnd]['media']['m'].replace("_m", "_b");
-
-            $('#background').css('background-image', "url('" + image_src + "')");
-
-        }); */
-
-
-
-
+       socket.on("ytPlay",function(data){
+        player.playVideo();
+        console.log("LEJÁTSZÁS B+");
+      });
+      socket.on("ytStop",function(data){
+        player.pauseVideo();
+        console.log("STOP  B+");
+      });
 
 
     });
-</script>
+
+ 
+
+
+ </script> 
 </body>
 
 </html>

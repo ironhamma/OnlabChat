@@ -23,7 +23,19 @@ module.exports = function (objRepo) {
           req.session.userId = result._id;
           req.session.access_token = "";
           req.session.username = result.username;
-          global.logedInUsers.push({userId: req.session.userId, username: req.session.username});
+          var newUser = true;
+            
+          var usArray = global.logedInUsers;
+          console.log(usArray);
+          if(usArray.some(item => item.username == result.username)){
+            var newUser = false;
+          }
+          console.log(usArray.some(item => item.username == result.username));
+          if(!newUser){
+          } else if(newUser){
+            global.logedInUsers.push({userId: req.session.userId, username: req.session.username});
+          }
+          console.log(global.logedInUsers);
           res.redirect('/messenger');
           next();
         }

@@ -134,10 +134,8 @@ body{
 
 #msgMain{
     width: 100%;
-    height: calc(100% - 3rem - 4rem);
-    background-color: rgba(0,0,0,0.3);
+    height: 100%;
     box-sizing: border-box;
-    padding: 1rem;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -160,7 +158,7 @@ body{
 
 #msgInput{
     height: 2.5rem;
-    width: 85%;
+    width: 72%;
     background-color: rgba(255,255,255,0.1);
     border: none;
     border-radius: 5px;
@@ -220,6 +218,7 @@ body{
     color: white;
     box-sizing: border-box;
     padding: .5rem 1rem;
+    position: relative;
 }
 
 .sbUser:nth-child(even){
@@ -255,6 +254,7 @@ body{
 .foreign{
     align-self: flex-end;
     margin-right: -20rem;
+    text-align: right;
 }
 
 .user{
@@ -266,20 +266,24 @@ body{
     transition: .3s all;
 }
 
-#emojiBtn{
+.iconBtn{
     color: rgba(255,255,255,0.1);
     font-size: 1.5rem;
     margin-left: .5rem;
     transition: .3s all;
 }
 
-#emojiBtn:hover{
+.iconBtn:hover{
     cursor: pointer;
     color: white;
 }
 
 #emojiBtn:active{
     color: yellow;
+}
+
+#ytTrigger:active{
+    color: red;
 }
 
 #emojiContainer{
@@ -305,3 +309,209 @@ body{
     height: 10rem !important;
 }
 
+.ytHeight{
+    height: 100% !important;
+}
+
+.emojiInText{
+    font-size: 1.5rem;
+    display: inline-block;
+}
+
+#ytContainer{
+    position: absolute;
+    width: calc(100%);
+    top: 0;
+    left: 0;
+    height: 0;
+    transition: .3s all;
+    overflow: hidden;
+}
+
+#ytInner{
+    width: calc(100%);
+    height: 100%;
+    padding: 1rem;
+    background-color: rgba(0,0,0,0.8);
+    border-bottom: 2px solid red;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#ytSearch{
+    width: 85%;
+    padding: .5rem;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    background-color: rgba(255,255,255,0.5);
+    color: black;
+    display: inline-block;
+}
+
+#ytsBtn{
+    display: inline-block;
+    width: 10%;
+    border-radius: 5px;
+    background-color: rgba(255,255,255,0.5);
+    color: black;
+    box-sizing: border-box;
+    padding: .35rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+#cameraContainer{
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    opacity: 1;
+    transition: .3s all;
+}
+
+#camImg{
+    border: 7px solid black;
+    border-radius: 5px;
+}
+
+.opacityOne{
+    opacity: 1 !important;
+}
+
+#captureBtn{
+    font-size: 1.5rem;
+    position: absolute;
+    top: 50%;
+    right: -10%;
+    background-color: white;
+    padding: .5rem;
+    border-radius: 5px;
+    border: 2px solid black;
+    transition: .3s all;
+}
+
+#captureBtn:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.userCall{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.sbUserName{
+    position: absolute;
+    top: 50%;
+    left: .5rem;
+    transform: translateY(-50%);
+}
+
+.sbUser a{
+    color: white;
+    text-decoration: none;
+}
+
+#callBody{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5;
+    overflow: hidden;
+    font-family: Comfortaa;
+}
+
+#callInfo{
+    position: absolute;
+    top: 2rem;
+    right: 50%;
+    transform: translateX(+50%);
+    color: white;
+    background-color: rgba(0,0,0,0.6);
+    padding: 2rem;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 4px solid rgba(0,0,0,0.6);
+    text-align: center;
+}
+
+#callInfoTime{
+    margin-top: .5rem;
+}
+
+#callHangUp{
+    position: absolute;
+    bottom: 2rem;
+    right: 50%;
+    transform: translateX(50%);
+    color: white;
+    background-color: rgba(255,0,0,0.6);
+    padding: 1rem;
+    border-radius: 5px;
+    border: 4px solid rgba(255,0,0,0.6);
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+#msgWrap{
+    position: relative;
+    height: calc(100% - 3rem - 4rem);
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    background-color: rgba(0,0,0,0.3);
+}
+
+#ytResultCont{
+    width: 100%;
+    height: 16rem;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.ytItem{
+    width: 15rem;
+    height: 10rem;
+    position: relative;
+    margin-right: 1rem;
+    margin-top: 1rem;
+}
+
+.ytItemThumb{
+    background-color: rgb(34, 34, 34);
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-shadow: 5px 5px 5px black;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.ytItemTitle{
+    position: absolute;
+    top: .25rem;
+    left: .25rem;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+}
+
+#ytVideo{
+    margin-top: 2rem;
+    text-align: center;
+}

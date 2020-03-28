@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calling</title>
+    <link rel="stylesheet" href="../../static/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static\js\perfect-scrollbar-1.4.0\css\perfect-scrollbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+</head>
+<body>
+    <div id="background"></div>
+    <div id="callBody">
+        <div id="callInfo">
+            <div id="callInfoName">Calling Kiss Béla</div>
+            <div id="callInfoTime">00:00</div>
+        </div>
+        <video autoplay id="videoStream" class="userVid"></video>
+        <canvas id="vidCanvas" class="partnerVid" width="640" height="480" style="display:none"></canvas>
+        <canvas id="vidCanvas2" class="partnerVid" width="640" height="480"></canvas>
+        <img src="" id="vidPic">
+        <div id="callHangUp"><i class="fas fa-phone-slash"></i>Hang up</div>
+    </div>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="../static/js/camCall.js"></script>
+<script>
+    socket = io();
+    initCamera();
+    console.log('<%= sessID %>');
+    //var cica = 'https://www.nbc12.com/resizer/eFTARB_xIo84lQUSMFJBjuuRqZ4=/1200x600/arc-anglerfish-arc2-prod-raycom.s3.amazonaws.com/public/UC2Y6PCJK5CXNLVUSV44X3DAF4.PNG';
+    var imgData = null;
+    setInterval(function(){
+        context.drawImage(video,0,0,640,480);
+        imgData = canvas.toDataURL("image/png");
+        $('#vidPic').attr('src',imgData);
+    },100);
+    setInterval(function(){
+        //context.drawImage(video,0,0,640,480);
+        //var data = canvas.toDataURL("image/png");
+        var cData = ['<%= sessID %>' , imgData];
+        socket.emit('image',JSON.stringify(cData));
+    },100);
+
+    socket.on('image',function(data){
+    decData = JSON.parse(data);
+    var context2 = document.getElementById("vidCanvas2").getContext("2d");
+    if(decData[0] != '<%= sessID %>'){
+        //$('#vidPic').attr('src',decData[1]);
+    }
+    });
+
+</script>
+</body>
+</html>
