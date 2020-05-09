@@ -22,6 +22,7 @@ const ps = new PerfectScrollbar('#emojiContainer', {
 /* Emoji integration */
 /****************************************************************/
 /****************************************************************/
+
 $.each(emojidata, function(){
   var emojiHtml = "<div class='emojiItem' data-emojistring='" + this + "'>" + this + "</div>";
   $("#emojiContainer").append(emojiHtml);
@@ -112,7 +113,12 @@ $("#cameraBtn").click(function(){
 socket.on('image',function(data){
   $('#vidPic').attr('src',data);
   console.log("Masik:" + socket.id);
-})
+});
+
+$("#ytsBtn").click(function(event){
+  console.log("CSINALD");
+  $("#ytVideo").css("opacity",1);
+});
 /* Random háttér flickr-ről */
 /*****************************************************************************/
 /*  $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
@@ -129,8 +135,5 @@ socket.on('image',function(data){
         $('#background').css('background-image', "url('" + image_src + "')");
 
     }); */
-
-  
-
 
 });

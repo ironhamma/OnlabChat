@@ -158,7 +158,7 @@ body{
 
 #msgInput{
     height: 2.5rem;
-    width: 72%;
+    width: 80%;
     background-color: rgba(255,255,255,0.1);
     border: none;
     border-radius: 5px;
@@ -197,6 +197,20 @@ body{
     left: 50%;
     transform: translate(-50%,-50%);
     font-size: 1.5rem;
+}
+
+#drawBtn{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+#drawBtn a{
+    color: white;
+    text-decoration: none;
 }
 
 #sidebarTitle{
@@ -514,4 +528,78 @@ body{
 #ytVideo{
     margin-top: 2rem;
     text-align: center;
+    opacity: 0;
+    transition: .3s all;
+}
+
+.callVideoMain{
+    height: 50vh;
+}
+
+#videoStream, #vidPic{
+    display: inline-block;
+}
+
+#vidCanvas, #vidCanvas2{
+    display: none;
+}
+
+#canvasMain{
+    background-image: url(../images/1521639.jpg);
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+#chatCanvas{
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#canvasTitle{
+    font-size: 1.2rem;
+    text-align: center;
+    font-family: 'Comfortaa';
+    margin-top: 2rem;
+    color: white;
+}
+
+.userVid{
+    margin-left: 2rem;
+    margin-top: 5rem;
+    border-radius: 5px;
+    border: 3px solid black;
+}
+
+#vidPic{
+    border: 3px solid black;
+    border-radius: 5px;
+}
+
+.errorBox{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 90%;
+    border: 3px solid red;
+    border-radius: 5px;
+    padding: .75rem 1rem;
+    background-color: rgba(255,0,0,0.6);
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+    z-index: 5000;
+}
+
+.errorBox ul{
+    padding: 0;
+    margin: 0;
+}
+
+.errorBox li{
+    list-style: none;
 }

@@ -19,6 +19,7 @@
     <div id="mainPanel">
         <div id="panelHead">
             <div id="panelUsername">Username</div>
+            <!--div id="drawBtn"><a href="/canvas">Let's draw!</a></div-->
         </div>
         <div id=msgWrap>
         <div id="msgMain"></div>
@@ -49,14 +50,12 @@
         <div id="msgForm">
             <form method="post">
                 <input type="text" name="msgInput" id="msgInput" autocomplete="off">
-                <i class="far fa-images iconBtn" id="imgUploadBtn"></i>
                 <i class="fab fa-youtube iconBtn" id="ytTrigger"></i>
                 <i class="far fa-smile iconBtn" id="emojiBtn"></i>
                 <button type="submit" id="msgSend" >Küldés</button>
             </form>
         </div>
     </div>
-    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
  <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady">   </script>
 <script src="/socket.io/socket.io.js"></script>
@@ -187,6 +186,7 @@ function makeRequest(){
         return false;
         }
       });
+
       var type = "user";
       socket.on('chat message', function(msg){
         var resp = JSON.parse(msg);
@@ -196,30 +196,31 @@ function makeRequest(){
           '<div class="messageSender">' + resp.sender + '</div>' +
           '<div class="messageText">' +
           resp.text +
-          '</div>');
+          '</div></div>');
           $('#msgMain').children('.message').last().animate({marginLeft: 0, marginRight: 0},300,"swing", function(){});
-      });
+          $("#msgMain").get()[0].scrollTop = $("#msgMain").get()[0].scrollHeight;
+        });
+
       socket.on('user connected', function(res){
       var logedInUsersText = "";
           var i = 0;
           for(i = 0; i < res.length; ++i){
-            logedInUsersText += '<div class="sbUser"><div class="sbUserName">' + res[i] + '</div><a href="/camCall"><i class=" userCall fas fa-phone"></i></a></div>';
+            logedInUsersText += '<div class="sbUser"><div class="sbUserName">' + res[i] +
+              ('<%=userObj.username%>' == res[i] ? "</div></div> " :  
+              '</div><a href="/camCall"><i class=" userCall fas fa-phone"></i></a></div>');
           }
         $('#sbUserWrapper').html(logedInUsersText);
       });
 
       socket.on("videoId", function(data){
         player.loadVideoById(data);
-        console.log(data);
       });
 
        socket.on("ytPlay",function(data){
         player.playVideo();
-        console.log("LEJÁTSZÁS B+");
       });
       socket.on("ytStop",function(data){
         player.pauseVideo();
-        console.log("STOP  B+");
       });
 
 

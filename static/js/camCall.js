@@ -31,12 +31,3 @@ function initCamera(){
         },errBack);
      }
 }
-
-  
-  /*var canvas2 = null;
-  var context2 = null;
-  canvas2 = document.getElementById("vidCanvas2");
-  context2 = canvas.getContext("2d");*/
-  
-
-//});

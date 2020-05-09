@@ -1,4 +1,5 @@
 var requireOption = require('../common').requireOption;
+const md5 = require('js-md5');
 
 
 module.exports = function (objRepo) {
@@ -11,13 +12,13 @@ module.exports = function (objRepo) {
       username: req.body.username
     }, function (err, result) {
       if ((err) || !result) {
-        res.status(403).send('/login');
-        next();
+        res.tpl.error.push('You are not registered as it seems!');
+         return next();
       }
       else {
-        if (result.password !== req.body.password) {
-          res.status(403).send('/login');
-          next();
+        if (result.password !== md5(req.body.password)) {
+          res.tpl.error.push('Wrong password!');
+          return next();
         }
         else {
           req.session.userId = result._id;
@@ -33,14 +34,11 @@ module.exports = function (objRepo) {
           console.log(usArray.some(item => item.username == result.username));
           if(!newUser){
           } else if(newUser){
-            global.logedInUsers.push({userId: req.session.userId, username: req.session.username});
+            global.logedInUsers.push({userId: req.session.userId, username: req.session.username, socketId: ""});
           }
-          console.log(global.logedInUsers);
           res.redirect('/messenger');
-          next();
         }
       }
     })
-
   };
 };

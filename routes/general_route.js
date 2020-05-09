@@ -18,27 +18,32 @@ module.exports = function (app) {
     app.get('/',
         redirectMW('/login'));
 
+    app.get('/canvas',
+        authMW(),
+        renderMW('canvas'));
+
     app.get('/login',
         renderMW('login'));
 
     app.post('/login',
         loginMW(objRepository),
+        renderMW('login')
         );
 
     app.get('/register',
         renderMW('register'));
 
     app.post('/register',    
-    registerMW(objRepository),
-    renderMW('login'));
+        registerMW(objRepository),
+        renderMW('register'));
 
     app.get('/messenger',
-    authMW(),
-    getUserDataMW(objRepository),
-    renderMW('index'));
+        authMW(),
+        getUserDataMW(objRepository),
+        renderMW('index'));
 
     app.get('/camCall',
-    authMW(),
-    getUserDataMW(objRepository),
-    renderMW('camCall'));
+        authMW(),
+        getUserDataMW(objRepository),
+        renderMW('camCall'));
 }

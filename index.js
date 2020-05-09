@@ -7,9 +7,8 @@ var bodyParser = require('body-parser');
 var helmet = require('helmet');
 var session = require('express-session');
 var emoji = require('node-emoji');
-var cv = require('opencv4nodejs');
 
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 app.use(helmet());
@@ -44,16 +43,19 @@ app.use(function (req, res, next){
 
 require('./routes/general_route')(app);
 
+
 io.on('connection', function(socket){
-  users = [];
+    users = [];
   for (let i = 0; i < logedInUsers.length; i++) {
     users.push(logedInUsers[i]['username']);          
   }
   io.emit('user connected',users);
+  
 });
 
 io.on('connection', function(socket){
     console.log('a user connected');
+    console.log(socket.id);
     socket.on('disconnect', function(){
         console.log('user disconnected');
       });
@@ -79,20 +81,24 @@ socket.on('chat message', function(msg){
   });  
 
   socket.on('videoId', function(data){
-    //var ytLink = 'https://www.youtube.com/embed/' + data + '?enablejsapi=1';
-    //console.log(ytLink);
     io.emit('videoId',data);
   })
 
   socket.on('ytPlay',function(data){
     io.emit('ytPlay',data);
-    console.log(data);
   });
   
   socket.on('ytStop', function(data){
     io.emit('ytStop',data);
-    console.log(data);
   });
+
+  socket.on('canvasMouse', function(data){
+    io.emit('canvasMouse',data);
+  })
+
+  socket.on('canvasCleared', function(data){
+    io.emit('canvasCleared',data);
+  })
 
 });
 
@@ -111,8 +117,8 @@ socket.on('chat message', function(msg){
 
 
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+http.listen(5000, function(){
+  console.log('listening on *:5000');
 });
 
 /* Spotify Integration */

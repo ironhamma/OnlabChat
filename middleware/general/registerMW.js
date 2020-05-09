@@ -1,4 +1,5 @@
 var requireOption = require('../common').requireOption;
+const md5 = require('js-md5');
 
 module.exports = function (objRepo) {
 
@@ -9,25 +10,36 @@ module.exports = function (objRepo) {
 
         userModel.findOne({ email: req.body.registerEmail }, function(err, result){
           if((err) || (result !== null)){
-            return res.status(403).send("email");
+            res.tpl.error.push('Email already registered!');
+            console.log("hiba");
+            return next();
           }
           if (req.body.regUser.length < 3) {
-            return res.status(403).send("user");
+            res.tpl.error.push("Username must be at least 3 characters long!");
+            console.log("hiba");
+            return next();
           }
-          if (req.body.regPass.length < 5 || req.body.regPass !== req.body.regRePassword){
-            return res.status(403).send("pass");    
+          if (req.body.regPass.length < 5){
+            res.tpl.error.push("Password must be at least 5 characters long!");   
+            console.log("hiba");
+            return next();
           }
-          else{
-
-          var newUser = new userModel();
-          newUser.username = req.body.regUser;
-          newUser.email = req.body.registerEmail;
-          newUser.password = req.body.regPass;
-          newUser.save(function (err) {
-            //redirect to /login
-            //return res.send('/events/list/');
-            next();
-          });
-        }});
+          if(req.body.regPass !== req.body.regRePassword){
+            res.tpl.error.push("Passwords must match!");  
+            console.log("hiba");
+            return next();
+          }
+          
+            console.log("nohiba");
+            var newUser = new userModel();
+            newUser.username = req.body.regUser;
+            newUser.email = req.body.registerEmail;
+            console.log(md5(req.body.regPass));
+            newUser.password = md5(req.body.regPass);
+              
+            newUser.save(function (err) {
+              res.redirect('/login');
+            });
+        });
       };
 };
